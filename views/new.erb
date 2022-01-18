@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset='utf-8'>
+  <!--<link rel="stylesheet" href="style.css">-->
+  <title>メモアプリ</title>
+</head>
+
+<body>
+    <header>
+      <h1>memo</h1>
+    </header>
+    <main>
+      <div class="edit-container">
+        <form method="POST" action="/memos/new">
+          <h2>メモタイトルを入力: <input type="text" name="memo_title"></h2>
+          <p>内容を入力<textarea name="memo_text" rows="8" cols="80"></textarea></p>
+          <input type="submit" value="新規作成">
+        </form>
+      </div>
+    </main>
+    <footer>
+      <p>コピーライト</p>
+    </footer>
+</body>
