@@ -3,7 +3,7 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
-require 'date'
+require 'securerandom'
 
 # 現在の時刻をメモのIDに用いる
 @memos = {}
@@ -26,8 +26,7 @@ get '/memos/new' do
 end
 
 post '/memos/new' do
-  dt = DateTime.now.to_s
-  @id = dt.gsub(/[^\d]/, '').to_i
+  @id = SecureRandom.uuid
   @memos = JSON.parse(File.read('json/memo.json'), symbolize_names: true)
   hash = { title: xss_solution(params[:memo_title]), text: xss_solution(params[:memo_text]) }
   @memos[@id] = hash
