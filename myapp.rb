@@ -4,15 +4,10 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
 require 'securerandom'
+require 'erb'
 
-# 現在の時刻をメモのIDに用いる
+include ERB::Util
 @memos = {}
-
-helpers do
-  def xss_solution(text)
-    Rack::Utils.escape_html(text)
-  end
-end
 
 # top
 get '/memos' do
@@ -28,7 +23,7 @@ end
 post '/memos/new' do
   @id = SecureRandom.uuid
   @memos = JSON.parse(File.read('json/memo.json'), symbolize_names: true)
-  hash = { title: xss_solution(params[:memo_title]), text: xss_solution(params[:memo_text]) }
+  hash = { title: params[:memo_title], text: params[:memo_text] }
   @memos[@id] = hash
 
   File.open('json/memo.json', 'w') do |file|
@@ -80,7 +75,7 @@ end
 # 更新
 patch '/memos/:id/edit' do
   @memo_id = params[:id].to_s
-  changed_hash = { title: xss_solution(params[:memo_title].to_s), text: xss_solution(params[:memo_text].to_s) }
+  changed_hash = { title: params[:memo_title].to_s, text: params[:memo_text].to_s }
   @memos = JSON.parse(File.read('json/memo.json'), symbolize_names: true)
   @memos[@memo_id] = changed_hash
 
