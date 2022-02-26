@@ -82,7 +82,7 @@ post '/memos/:id/edit' do
 end
 
 # 更新
-patch '/memos/:id/edit' do
+patch '/memos/:id' do
   @memo_id = params[:id].to_sym
   @memo = { title: params[:memo_title].to_s, text: params[:memo_text].to_s }
   Jsonfile_handle.load_json
