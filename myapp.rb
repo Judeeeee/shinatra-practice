@@ -34,7 +34,7 @@ get '/memos/new' do
   erb :new
 end
 
-post '/memos/new' do
+post '/memos' do
   @id = SecureRandom.uuid
   DataBaseHandles.load
   @memo = { title: params[:memo_title].to_s, text: params[:memo_text].to_s }
