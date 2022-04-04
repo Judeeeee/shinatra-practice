@@ -15,7 +15,7 @@ class DataBaseHandles
       @memos = JSON.parse(File.read('json/memo.json'), symbolize_names: true)
     end
 
-    def open_json
+    def store
       File.open('json/memo.json', 'w') do |file|
         JSON.dump(@memos, file)
       end
@@ -39,7 +39,7 @@ post '/memos/new' do
   DataBaseHandles.load
   @memo = { title: params[:memo_title].to_s, text: params[:memo_text].to_s }
   DataBaseHandles.load[@id] = @memo
-  DataBaseHandles.open_json
+  DataBaseHandles.store
   DataBaseHandles.load
 
   redirect '/memos'
@@ -60,7 +60,7 @@ delete '/memos/:id' do
   @memo_id = params[:id].to_sym
   DataBaseHandles.load
   DataBaseHandles.load.delete(@memo_id)
-  DataBaseHandles.open_json
+  DataBaseHandles.store
 
   redirect '/memos'
 end
@@ -87,7 +87,7 @@ patch '/memos/:id' do
   @memo = { title: params[:memo_title].to_s, text: params[:memo_text].to_s }
   DataBaseHandles.load
   DataBaseHandles.load[@memo_id] = @memo
-  DataBaseHandles.open_json
+  DataBaseHandles.store
 
   erb :edit
   redirect '/memos'
