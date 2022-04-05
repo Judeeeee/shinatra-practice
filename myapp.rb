@@ -20,6 +20,11 @@ class DataBaseHandles
         JSON.dump(@memos, file)
       end
     end
+
+    def add(memo)
+      @id = SecureRandom.uuid
+      @memos[@id] = memo
+    end
   end
 end
 
@@ -35,12 +40,9 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  @id = SecureRandom.uuid
-  DataBaseHandles.load
   @memo = { title: params[:memo_title].to_s, text: params[:memo_text].to_s }
-  DataBaseHandles.load[@id] = @memo
+  DataBaseHandles.add(@memo)
   DataBaseHandles.store
-  DataBaseHandles.load
 
   redirect '/memos'
 end
