@@ -31,6 +31,7 @@ end
 # top
 get '/memos' do
   DataBaseHandles.load
+  @memolist = DataBaseHandles.load.map{ |memo| "<a href=/memos/#{memo[0]}>#{html_escape(memo[1][:title])}</a>" }.join("<br>")
   erb :index
 end
 
