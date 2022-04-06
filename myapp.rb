@@ -49,10 +49,10 @@ end
 
 # show
 get '/memos/:id' do
-  DataBaseHandles.load
   @memo_id = params[:id].to_sym
-  @title = DataBaseHandles.load[@memo_id][:title]
-  @text = DataBaseHandles.load[@memo_id][:text]
+  @memo = DataBaseHandles.load[@memo_id]
+  @title = @memo[:title]
+  @text = @memo[:text]
 
   erb :show
 end
@@ -60,7 +60,6 @@ end
 # 削除
 delete '/memos/:id' do
   @memo_id = params[:id].to_sym
-  DataBaseHandles.load
   DataBaseHandles.load.delete(@memo_id)
   DataBaseHandles.store
 
@@ -68,10 +67,10 @@ delete '/memos/:id' do
 end
 
 get '/memos/:id/edit' do
-  DataBaseHandles.load
   @memo_id = params[:id].to_sym
-  @title = DataBaseHandles.load[@memo_id][:title]
-  @text = DataBaseHandles.load[@memo_id][:text]
+  @memo = DataBaseHandles.load[@memo_id]
+  @title = @memo[:title]
+  @text = @memo[:text]
 
   erb :edit
 end
@@ -87,7 +86,6 @@ end
 patch '/memos/:id' do
   @memo_id = params[:id].to_sym
   @memo = { title: params[:memo_title].to_s, text: params[:memo_text].to_s }
-  DataBaseHandles.load
   DataBaseHandles.load[@memo_id] = @memo
   DataBaseHandles.store
 
