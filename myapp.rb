@@ -5,6 +5,7 @@ require 'sinatra/reloader'
 require 'json'
 require 'securerandom'
 require 'erb'
+require 'byebug'
 
 include ERB::Util
 memos = {}
