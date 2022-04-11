@@ -36,8 +36,7 @@ end
 post '/memos' do
   @memos = load()
   @memo = { title: params[:memo_title].to_s, text: params[:memo_text].to_s }
-  @id = SecureRandom.uuid
-  @memos[@id] = @memo
+  @memos[SecureRandom.uuid] = @memo
   store(@memos)
 
   redirect '/memos'
