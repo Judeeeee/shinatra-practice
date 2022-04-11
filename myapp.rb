@@ -14,14 +14,11 @@ def load
   JSON.parse(File.read('json/memo.json'), symbolize_names: true)
 end
 
-def store
+def store(memodata)
   File.open('json/memo.json', 'w') do |file|
-   JSON.dump(@memos, file)
+   JSON.dump(memodata, file)
   end
 end
-
-
-
 
 
 # top
@@ -41,7 +38,7 @@ post '/memos' do
   @memo = { title: params[:memo_title].to_s, text: params[:memo_text].to_s }
   @id = SecureRandom.uuid
   @memos[@id] = @memo
-  store
+  store(@memos)
 
   redirect '/memos'
 end
@@ -62,7 +59,7 @@ delete '/memos/:id' do
   @memo_id = params[:id].to_sym
   @memos = load()
   @memos.delete(@memo_id)
-  store
+  store(@memos)
 
   redirect '/memos'
 end
@@ -90,7 +87,7 @@ patch '/memos/:id' do
   @memo = { title: params[:memo_title].to_s, text: params[:memo_text].to_s }
   @memos = load()
   @memos[@memo_id] = @memo
-  store
+  store(@memos)
 
   erb :edit
   redirect '/memos'
