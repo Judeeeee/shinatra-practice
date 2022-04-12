@@ -13,7 +13,11 @@
     <main>
       <div class="memo-list">
         <h2>メモリスト</h2>
-          <p><%=@memolist%></p>
+        <%@array_size.times{|n| %>
+          <%@test_id = @memo_id_array[n]%>
+          <%@test_title = @memos[@test_id][:title]%>
+          <p><a href=/memos/<%=@test_id%>> <%=html_escape(@test_title)%> </a><br></p>
+        <% } %>
       </div>
       <div class="new-botton">
         <a href="/memos/new">

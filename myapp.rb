@@ -24,7 +24,9 @@ end
 # top
 get '/memos' do
   @memos = load()
-  @memolist = @memos.map{ |memo| "<a href=/memos/#{memo[0]}>#{html_escape(memo[1][:title])}</a>" }.join("<br>")
+  @memo_id_array = @memos.keys
+  @array_size = @memo_id_array.size
+
   erb :index
 end
 
