@@ -12,14 +12,25 @@ require 'pg'
 conn = PG.connect( dbname: 'shinatra_memoapp' )
 # @memos = conn.exec( "SELECT * FROM memodata" ) #これ自体がハッシュなので、@memos[0]とかで取り出せそう
 
-def load
-  JSON.parse(File.read('json/memo.json'), symbolize_names: true)
-end
-
-def store(memodata)
-  File.open('json/memo.json', 'w') do |file|
-   JSON.dump(memodata, file)
+# PostgreSQLの操作
+  def create(idd,titlee,textt)
+    @conn = PG.connect( dbname: 'shinatra_memoapp' )
+    @conn.exec( "insert into memodata values ('#{idd}','#{titlee}','#{textt}')" )
   end
+
+  def find(idd)
+    @conn = PG.connect( dbname: 'shinatra_memoapp' )
+    @conn.exec("SELECT * FROM memodata WHERE id='#{idd}'")
+  end
+
+  def update(idd,titlee,textt)
+    @conn = PG.connect( dbname: 'shinatra_memoapp' )
+    @conn.exec("UPDATE memodata set title='#{titlee}', sentence='#{textt}' where id='#{idd}'")
+  end
+
+  def delete(idd)
+    @conn = PG.connect( dbname: 'shinatra_memoapp' )
+    @conn.exec("DELETE FROM memodata where id='#{idd}'")
 end
 # 他に必要なもの
   # メモリスト(トップページで一覧表示させるため)
