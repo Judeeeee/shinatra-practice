@@ -6,6 +6,7 @@ require 'json'
 require 'securerandom'
 require 'erb'
 require 'byebug'
+require 'pg'
 
 #postgreSQLで出力テスト
 conn = PG.connect( dbname: 'shinatra_memoapp' )
