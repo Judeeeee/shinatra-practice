@@ -62,41 +62,47 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  @memos = load()
-  @memo = { title: params[:memo_title].to_s, text: params[:memo_text].to_s }
-  @memos[SecureRandom.uuid] = @memo
-  store(@memos)
+  @title = params[:memo_title].to_s
+  @text = params[:memo_text].to_s
+  @id = SecureRandom.uuid.to_s
+  create(@id,@title,@text)
+  redirect '/memos'
+end
 
 
 get '/memos/:id' do
   @memo_id = params[:id].to_sym
-  @memos = load()
-  @memo = @memos[@memo_id]
-  @title = @memo[:title]
-  @text = @memo[:text]
+  @memo = find(@memo_id)
+  @title = @memo[0]["title"]
+  @text = @memo[0]["sentence"]
+
+  erb :show
+end
 
 
 delete '/memos/:id' do
   @memo_id = params[:id].to_sym
-  @memos = load()
-  @memos.delete(@memo_id)
-  store(@memos)
+  delete(@memo_id)
+
+  redirect '/memos'
+end
 
 
 get '/memos/:id/edit' do
   @memo_id = params[:id].to_sym
-  @memos = load()
-  @memo = @memos[@memo_id]
-  @title = @memo[:title]
-  @text = @memo[:text]
+  @memo = find(@memo_id)
+  @title = @memo[0]["title"]
+  @text = @memo[0]["sentence"]
+
+  erb :edit
+end
 
 
 patch '/memos/:id' do
   @memo_id = params[:id].to_sym
-  @memo = { title: params[:memo_title].to_s, text: params[:memo_text].to_s }
-  @memos = load()
-  @memos[@memo_id] = @memo
-  store(@memos)
+  @title = params[:memo_title].to_s
+  @text = params[:memo_text].to_s
+  update(@memo_id,@title,@text)
 
   erb :edit
   redirect '/memos'
