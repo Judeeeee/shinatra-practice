@@ -33,10 +33,26 @@ end
 
 
 get '/memos' do
-  @memos = load()
-  @memo_id_array = @memos.keys
-  @array_size = @memo_id_array.size
+  @conn = PG.connect( dbname: 'shinatra_memoapp' )
+  @memo_list = @conn.exec("SELECT * FROM memodata")
+  #memo全てのハッシュを配列に格納
+    @memos = []
+    for memo in @memo_list
+      @memos.push(memo)
+    end
 
+  @array_size = @memos.size
+
+    @memo_id_array = []
+    @array_size.times{|n|
+      @memo_id_array[n] = @memos[n]["id"]
+    }
+
+
+    @memo_title_array = []
+    @array_size.times{|n|
+      @memo_title_array[n] = @memos[n]["title"]
+    }
   erb :index
 end
 

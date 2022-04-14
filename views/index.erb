@@ -15,7 +15,7 @@
         <h2>メモリスト</h2>
         <%@array_size.times{|n| %>
           <%@test_id = @memo_id_array[n]%>
-          <%@test_title = @memos[@test_id][:title]%>
+          <%@test_title = @memo_title_array[n]%>
           <p><a href=/memos/<%=@test_id%>> <%=html_escape(@test_title)%> </a><br></p>
         <% } %>
       </div>
