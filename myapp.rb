@@ -7,8 +7,9 @@ require 'securerandom'
 require 'erb'
 require 'byebug'
 
-include ERB::Util
-memos = {}
+#postgreSQLで出力テスト
+conn = PG.connect( dbname: 'shinatra_memoapp' )
+# @memos = conn.exec( "SELECT * FROM memodata" ) #これ自体がハッシュなので、@memos[0]とかで取り出せそう
 
 def load
   JSON.parse(File.read('json/memo.json'), symbolize_names: true)
@@ -19,6 +20,9 @@ def store(memodata)
    JSON.dump(memodata, file)
   end
 end
+# 他に必要なもの
+  # メモリスト(トップページで一覧表示させるため)
+  # @memolist
 
 
 # top
@@ -30,10 +34,13 @@ get '/memos' do
   erb :index
 end
 
-# new
-get '/memos/new' do
-  erb :new
-end
+  # top
+  get '/memos' do #ここわからんかも
+    memos = conn.exec( "SELECT * FROM memodata" )
+    # 展開してhash作り直せば良い？
+      # 一旦無視 @memolist = @memo.map{ |memo| "<a href=/memos/#{memo[0]}>#{html_escape(memo[1][:title])}</a>" }.join("<br>")
+    erb :index
+  end
 
 post '/memos' do
   @memos = load()
@@ -41,8 +48,10 @@ post '/memos' do
   @memos[SecureRandom.uuid] = @memo
   store(@memos)
 
-  redirect '/memos'
-end
+  post '/memos' do
+    PostgreSQL.create
+    redirect '/memos'
+  end
 
 # show
 get '/memos/:id' do
@@ -52,8 +61,12 @@ get '/memos/:id' do
   @title = @memo[:title]
   @text = @memo[:text]
 
-  erb :show
-end
+  # 削除
+  delete '/memos/:id' do
+    @memo_id = params[:id].to_sym　#URLからID取得して検索かけてる
+    PostgreSQL.delete
+    redirect '/memos'
+  end
 
 # 削除
 delete '/memos/:id' do
@@ -62,8 +75,11 @@ delete '/memos/:id' do
   @memos.delete(@memo_id)
   store(@memos)
 
-  redirect '/memos'
-end
+  # edit
+  post '/memos/:id/edit' do
+    PostgreSQL.find_id #ここはわからん
+    erb :edit
+  end
 
 get '/memos/:id/edit' do
   @memo_id = params[:id].to_sym
@@ -72,15 +88,11 @@ get '/memos/:id/edit' do
   @title = @memo[:title]
   @text = @memo[:text]
 
-  erb :edit
-end
 
 # edit
 post '/memos/:id/edit' do
   load()
 
-  erb :edit
-end
 
 # 更新
 patch '/memos/:id' do
@@ -90,6 +102,90 @@ patch '/memos/:id' do
   @memos[@memo_id] = @memo
   store(@memos)
 
-  erb :edit
-  redirect '/memos'
-end
+# include ERB::Util
+# memos = {}
+#
+# class DataBaseHandles
+#   class << self
+#     def load
+#       @memos = JSON.parse(File.read('json/memo.json'), symbolize_names: true)
+#     end
+#
+#     def store
+#       File.open('json/memo.json', 'w') do |file|
+#         JSON.dump(@memos, file)
+#       end
+#     end
+#
+#     def add(memo)
+#       @id = SecureRandom.uuid
+#       @memos[@id] = memo
+#     end
+#   end
+# end
+#
+# # top
+# get '/memos' do
+#   DataBaseHandles.load
+#   @memolist = DataBaseHandles.load.map{ |memo| "<a href=/memos/#{memo[0]}>#{html_escape(memo[1][:title])}</a>" }.join("<br>")
+#   erb :index
+# end
+#
+# # new
+# get '/memos/new' do
+#   erb :new
+# end
+#
+# post '/memos' do
+#   @memo = { title: params[:memo_title].to_s, text: params[:memo_text].to_s }
+#   DataBaseHandles.add(@memo)
+#   DataBaseHandles.store
+#
+#   redirect '/memos'
+# end
+#
+# # show
+# get '/memos/:id' do
+#   @memo_id = params[:id].to_sym
+#   @memo = DataBaseHandles.load[@memo_id]
+#   @title = @memo[:title]
+#   @text = @memo[:text]
+#
+#   erb :show
+# end
+#
+# # 削除
+# delete '/memos/:id' do
+#   @memo_id = params[:id].to_sym
+#   DataBaseHandles.load.delete(@memo_id)
+#   DataBaseHandles.store
+#
+#   redirect '/memos'
+# end
+#
+# get '/memos/:id/edit' do
+#   @memo_id = params[:id].to_sym
+#   @memo = DataBaseHandles.load[@memo_id]
+#   @title = @memo[:title]
+#   @text = @memo[:text]
+#
+#   erb :edit
+# end
+#
+# # edit
+# post '/memos/:id/edit' do
+#   DataBaseHandles.load
+#
+#   erb :edit
+# end
+#
+# # 更新
+# patch '/memos/:id' do
+#   @memo_id = params[:id].to_sym
+#   @memo = { title: params[:memo_title].to_s, text: params[:memo_text].to_s }
+#   DataBaseHandles.load[@memo_id] = @memo
+#   DataBaseHandles.store
+#
+#   erb :edit
+#   redirect '/memos'
+# end

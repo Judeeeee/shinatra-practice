@@ -3,6 +3,7 @@
 source 'https://rubygems.org'
 
 gem 'date'
+gem 'pg'
 gem 'json'
 gem 'sinatra'
 gem 'sinatra-contrib'
