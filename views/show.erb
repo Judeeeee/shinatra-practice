@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset='utf-8'>
+  <!--<link rel="stylesheet" href="style.css">-->
+  <title>メモアプリ</title>
+</head>
+
+<body>
+    <header>
+      <h1>memo</h1>
+    </header>
+    <main>
+      <div class="edit-container">
+        <h2><%= html_escape(@title) %></h2>
+        <p><%= html_escape(@text) %></p>
+      </div>
+      <div class="save-botton">
+        <a href="/memos/<%= @memo_id %>/edit">
+          <button>変更</button>
+        </a>
+        <form method="post" action="/memos/<%= @memo_id %>">
+          <button type="hidden" name="_method" value="DELETE">削除</button>
+        </form>
+      </div>
+    </main>
+    <footer>
+      <p>コピーライト</p>
+    </footer>
+</body>
