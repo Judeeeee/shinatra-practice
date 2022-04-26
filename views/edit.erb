@@ -1,28 +1,10 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset='utf-8'>
-    <title>メモアプリ</title>
-  </head>
-
-  <body>
-    <header>
-      <h1>memo</h1>
-    </header>
-    <main>
-      <div class="edit-container">
-        <form  method="POST" action="/memos/<%= @memo_id %>">
-          <h2>メモタイトルを入力:</h2>
-          <textarea name="memo_title" rows="8" cols="80"><%= html_escape(@memo["title"]) %></textarea>
-          <p>メモの内容を入力</p>
-          <textarea name="memo_text" rows="8" cols="80"><%= html_escape(@memo["sentence"]) %></textarea>
-          <input id="hidden" type="hidden" name="_method" value="patch">
-          <input type="submit" value="変更" class="button add" method="PATCH">
-        </form>
-      </div>
-    </main>
-    <footer>
-      <p>コピーライト</p>
-    </footer>
-  </body>
-</html>
+<div class="edit-container">
+  <form  method="POST" action="/memos/<%= @memo_id %>">
+    <h2>メモタイトルを入力:</h2>
+    <textarea name="memo_title" rows="8" cols="80"><%= html_escape(@memo["title"]) %></textarea>
+    <p>メモの内容を入力</p>
+    <textarea name="memo_text" rows="8" cols="80"><%= html_escape(@memo["sentence"]) %></textarea>
+    <input id="hidden" type="hidden" name="_method" value="patch">
+    <input type="submit" value="変更" class="button add" method="PATCH">
+  </form>
+</div>
