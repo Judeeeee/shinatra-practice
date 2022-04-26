@@ -10,25 +10,43 @@ require 'pg'
 
 include ERB::Util
 
-# PostgreSQLの操作
-  def create(idd,titlee,textt)
-    @conn = PG.connect( dbname: 'shinatra_memoapp' )
-    @conn.exec( "insert into memodata values ('#{idd}','#{titlee}','#{textt}')" )
-  end
+def postgresql(sql)
+  conn = PG.connect( dbname: 'shinatra_memoapp' )
+  memos_data = conn.exec(sql)
+  conn.finish
+  memos_data
+end
 
-  def find(idd)
-    @conn = PG.connect( dbname: 'shinatra_memoapp' )
-    @conn.exec("SELECT * FROM memodata WHERE id='#{idd}'")
-  end
+def select
+  sql = "SELECT * FROM memodata"
+  postgresql(sql)
+end
 
-  def update(idd,titlee,textt)
-    @conn = PG.connect( dbname: 'shinatra_memoapp' )
-    @conn.exec("UPDATE memodata set title='#{titlee}', sentence='#{textt}' where id='#{idd}'")
-  end
+def create(id)
+  title = params[:memo_title]
+  text = params[:memo_text]
+  sql = "INSERT INTO memodata values ('#{id}', '#{title}', '#{text}')"
+  postgresql(sql)
+end
 
-  def delete(idd)
-    @conn = PG.connect( dbname: 'shinatra_memoapp' )
-    @conn.exec("DELETE FROM memodata where id='#{idd}'")
+def find(id)
+  sql = "SELECT * FROM memodata WHERE id = '#{id}'"
+  memo = postgresql(sql)
+  memo[0]
+end
+
+def update
+  title = params[:memo_title]
+  text = params[:memo_text]
+  id = params[:id]
+  sql = "UPDATE memodata SET title = '#{title}', sentence = '#{text}' WHERE id = '#{id}'"
+  postgresql(sql)
+end
+
+def delete
+  id = params[:id].to_sym
+  sql = "DELETE FROM memodata WHERE id = '#{id}'"
+  postgresql(sql)
 end
 
 
@@ -62,10 +80,8 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  @title = params[:memo_title].to_s
-  @text = params[:memo_text].to_s
-  @id = SecureRandom.uuid.to_s
-  create(@id,@title,@text)
+  id = SecureRandom.uuid.to_s
+  create(id)
   redirect '/memos'
 end
 
@@ -73,17 +89,12 @@ end
 get '/memos/:id' do
   @memo_id = params[:id].to_sym
   @memo = find(@memo_id)
-  @title = @memo[0]["title"]
-  @text = @memo[0]["sentence"]
-
   erb :show
 end
 
 
 delete '/memos/:id' do
-  @memo_id = params[:id].to_sym
-  delete(@memo_id)
-
+  delete
   redirect '/memos'
 end
 
@@ -91,19 +102,14 @@ end
 get '/memos/:id/edit' do
   @memo_id = params[:id].to_sym
   @memo = find(@memo_id)
-  @title = @memo[0]["title"]
-  @text = @memo[0]["sentence"]
-
   erb :edit
 end
 
 
 patch '/memos/:id' do
   @memo_id = params[:id].to_sym
-  @title = params[:memo_title].to_s
-  @text = params[:memo_text].to_s
-  update(@memo_id,@title,@text)
-
+  @memo = find(@memo_id)
+  update
   erb :edit
   redirect '/memos'
 end
