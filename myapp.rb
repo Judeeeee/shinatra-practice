@@ -13,9 +13,7 @@ include ERB::Util
 
 get '/memos' do
   conn = PG.connect( dbname: 'shinatra_memoapp' )
-  memos = conn.exec('SELECT * FROM memodata')
-  @memo_list = []
-  memos.map { |memo| @memo_list << memo }
+  @memos = conn.exec('SELECT * FROM memodata').to_a
   erb :index
 end
 

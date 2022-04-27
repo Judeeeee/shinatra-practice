@@ -1,6 +1,6 @@
 <div class="memo-list">
   <h2>メモリスト</h2>
-  <% @memo_list.each do |memo| %>
+  <% @memos.each do |memo| %>
     <% @id = memo["id"] %>
     <% @title = memo["title"] %>
     <p><a href=/memos/<%= @id %>> <%= html_escape(@title) %></a><br></p>
