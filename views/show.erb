@@ -1,6 +1,6 @@
 <div class="edit-container">
-  <h2><%= html_escape(@memo["title"]) %></h2>
-  <p><%= html_escape(@memo["sentence"]) %></p>
+  <h2><%= html_escape(@memo[0]["title"]) %></h2>
+  <p><%= html_escape(@memo[0]["sentence"]) %></p>
 </div>
 <div class="save-botton">
   <a href="/memos/<%= @memo_id %>/edit">
