@@ -9,14 +9,12 @@ require 'byebug'
 require 'pg'
 
 include ERB::Util
-
-conn = PG.connect( dbname: 'shinatra_memoapp' )
+conn = PG.connect(dbname: 'shinatra_memoapp')
 
 get '/memos' do
   @memos = conn.exec('SELECT * FROM memodata').to_a
   erb :index
 end
-
 
 get '/memos/new' do
   erb :new
@@ -31,7 +29,6 @@ post '/memos' do
   redirect '/memos'
 end
 
-
 get '/memos/:id' do
   @memo_id = params[:id].to_sym
   @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [@memo_id])
@@ -39,13 +36,11 @@ get '/memos/:id' do
   erb :show
 end
 
-
 delete '/memos/:id' do
   memo_id = params[:id].to_sym
   conn.exec_params('DELETE FROM memodata WHERE id = $1', [memo_id])
   redirect '/memos'
 end
-
 
 get '/memos/:id/edit' do
   @memo_id = params[:id].to_sym
@@ -53,14 +48,13 @@ get '/memos/:id/edit' do
   erb :edit
 end
 
-
 patch '/memos/:id' do
   memo_id = params[:id].to_sym
   @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [memo_id])
   title = params[:memo_title]
   text = params[:memo_text]
   id = params[:id]
-  conn.exec_params('UPDATE memodata SET title = $1, sentence = $2 WHERE id = $3',[title, text,id])
+  conn.exec_params('UPDATE memodata SET title = $1, sentence = $2 WHERE id = $3', [title, text, id])
   erb :edit
   redirect '/memos'
 end
