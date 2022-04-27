@@ -41,8 +41,8 @@ end
 
 
 delete '/memos/:id' do
-  @memo_id = params[:id].to_sym
-  conn.exec_params('DELETE FROM memodata WHERE id = $1', [@memo_id])
+  memo_id = params[:id].to_sym
+  conn.exec_params('DELETE FROM memodata WHERE id = $1', [memo_id])
   redirect '/memos'
 end
 
@@ -55,8 +55,8 @@ end
 
 
 patch '/memos/:id' do
-  @memo_id = params[:id].to_sym
-  @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [@memo_id])
+  memo_id = params[:id].to_sym
+  @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [memo_id])
   title = params[:memo_title]
   text = params[:memo_text]
   id = params[:id]
