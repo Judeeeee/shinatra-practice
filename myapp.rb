@@ -21,7 +21,7 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  id = SecureRandom.uuid.to_s
+  id = SecureRandom.uuid
   title = params[:memo_title]
   text = params[:memo_text]
   conn.exec_params('INSERT INTO memodata (id, title, sentence) VALUES ($1, $2, $3)', [id, title, text])
