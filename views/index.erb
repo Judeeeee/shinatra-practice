@@ -1,9 +1,7 @@
 <div class="memo-list">
   <h2>メモリスト</h2>
   <% @memos.each do |memo| %>
-    <% @id = memo["id"] %>
-    <% @title = memo["title"] %>
-    <p><a href=/memos/<%= @id %>> <%= html_escape(@title) %></a><br></p>
+    <p><a href=/memos/<%= memo["id"] %>> <%= html_escape(memo["title"]) %></a><br></p>
   <% end %>
 </div>
 <div class="new-botton">
