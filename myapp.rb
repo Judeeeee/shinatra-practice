@@ -12,7 +12,7 @@ include ERB::Util
 conn = PG.connect(dbname: 'shinatra_memoapp')
 
 get '/memos' do
-  @memos = conn.exec('SELECT * FROM memodata').to_a
+  @memos = conn.exec('SELECT * FROM memodata')
   erb :index
 end
 
