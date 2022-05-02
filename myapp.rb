@@ -32,7 +32,7 @@ end
 
 get '/memos/:id' do
   @memo_id = params[:id]
-  @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [@memo_id][0])
+  @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [@memo_id])[0]
 
   erb :show
 end
@@ -45,13 +45,13 @@ end
 
 get '/memos/:id/edit' do
   @memo_id = params[:id]
-  @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [@memo_id][0])
+  @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [@memo_id])[0]
   erb :edit
 end
 
 patch '/memos/:id' do
   memo_id = params[:id]
-  @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [memo_id][0])
+  @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [memo_id])[0]
   title = params[:memo_title]
   text = params[:memo_text]
   id = params[:id]
