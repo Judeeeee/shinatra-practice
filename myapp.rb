@@ -10,6 +10,7 @@ require 'pg'
 
 include ERB::Util
 conn = PG.connect(dbname: 'shinatra_memoapp')
+conn.exec('CREATE TABLE memodata (id UUID PRIMARY KEY, title TEXT , sentence TEXT)')
 
 get '/memos' do
   @memos = conn.exec('SELECT * FROM memodata')
