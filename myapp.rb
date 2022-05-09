@@ -50,12 +50,10 @@ get '/memos/:id/edit' do
 end
 
 patch '/memos/:id' do
-  memo_id = params[:id]
-  @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [memo_id])[0]
   title = params[:memo_title]
   text = params[:memo_text]
   id = params[:id]
   conn.exec_params('UPDATE memodata SET title = $1, sentence = $2 WHERE id = $3', [title, text, id])
-  erb :edit
+
   redirect '/memos'
 end
