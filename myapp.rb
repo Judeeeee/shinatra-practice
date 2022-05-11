@@ -26,14 +26,12 @@ post '/memos' do
   title = params[:memo_title]
   text = params[:memo_text]
   conn.exec_params('INSERT INTO memodata (id, title, sentence) VALUES ($1, $2, $3)', [id, title, text])
-
   redirect '/memos'
 end
 
 get '/memos/:id' do
   memo_id = params[:id]
   @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [memo_id])[0]
-
   erb :show
 end
 
@@ -53,6 +51,5 @@ patch '/memos/:id' do
   text = params[:memo_text]
   id = params[:id]
   conn.exec_params('UPDATE memodata SET title = $1, sentence = $2 WHERE id = $3', [title, text, id])
-
   redirect '/memos'
 end
