@@ -44,7 +44,6 @@ delete '/memos/:id' do
 end
 
 get '/memos/:id/edit' do
-  @memo_id = params[:id]
   @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [@memo_id])[0]
   erb :edit
 end
