@@ -3,10 +3,10 @@
   <p><%= html_escape(@memo["sentence"]) %></p>
 </div>
 <div class="save-botton">
-  <a href="/memos/<%= params[:id] %>/edit">
+  <a href="/memos/<%= @memo["id"] %>/edit">
     <button>変更</button>
   </a>
-  <form method="post" action="/memos/<%= params[:id] %>">
+  <form method="post" action="/memos/<%= @memo["id"] %>">
     <button type="submit" name="_method" value="DELETE">削除</button>
   </form>
 </div>

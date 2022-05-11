@@ -31,17 +31,21 @@ post '/memos' do
 end
 
 get '/memos/:id' do
-  @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [params[:id]])[0]
+  memo_id = params[:id]
+  @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [memo_id])[0]
+
   erb :show
 end
 
 delete '/memos/:id' do
-  conn.exec_params('DELETE FROM memodata WHERE id = $1', [params[:id]])
+  memo_id = params[:id]
+  conn.exec_params('DELETE FROM memodata WHERE id = $1', [memo_id])
   redirect '/memos'
 end
 
 get '/memos/:id/edit' do
-  @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [params[:id]])[0]
+  @memo_id = params[:id]
+  @memo = conn.exec_params('SELECT * FROM memodata WHERE id = $1', [@memo_id])[0]
   erb :edit
 end
 
