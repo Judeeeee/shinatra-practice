@@ -23,8 +23,8 @@ end
 
 post '/memos' do
   id = SecureRandom.uuid
-  title = params[:memo_title]
-  text = params[:memo_text]
+  title = params[:title]
+  text = params[:text]
   conn.exec_params('INSERT INTO memodata (id, title, sentence) VALUES ($1, $2, $3)', [id, title, text])
   redirect '/memos'
 end
@@ -47,8 +47,8 @@ get '/memos/:id/edit' do
 end
 
 patch '/memos/:id' do
-  title = params[:memo_title]
-  text = params[:memo_text]
+  title = params[:title]
+  text = params[:text]
   id = params[:id]
   conn.exec_params('UPDATE memodata SET title = $1, sentence = $2 WHERE id = $3', [title, text, id])
   redirect '/memos'
