@@ -1,6 +1,6 @@
 <div class="edit-container">
   <form  method="POST" action="/memos/<%= @memo["id"] %>">
-    <h2>メモタイトルを入力:</h2>
+    <p>メモタイトルを入力:</p>
     <textarea name="title" rows="8" cols="80"><%= html_escape(@memo["title"]) %></textarea>
     <p>メモの内容を入力</p>
     <textarea name="text" rows="8" cols="80"><%= html_escape(@memo["sentence"]) %></textarea>
