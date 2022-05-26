@@ -5,6 +5,6 @@
     <p>メモの内容を入力</p>
     <textarea name="text" rows="8" cols="80"><%= html_escape(@memo["sentence"]) %></textarea>
     <input id="hidden" type="hidden" name="_method" value="patch">
-    <input type="submit" value="変更" class="button add" method="PATCH">
+    <button type="submit" name="_method" value="PATCH">変更</button>
   </form>
 </div>
