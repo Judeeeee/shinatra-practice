@@ -1,13 +1,41 @@
 # Shinatraメモアプリについて
 ## 概要
 これは、FjordBootCampの課題(提出物)です。
-shinatraを用いてDBを使用しないメモアプリを作成しました。(作成メモはjsonファイルに記述される)
+該当プラクティスは[こちら](https://bootcamp.fjord.jp/practices/179)
+DBとしてPostgreSQLを利用したメモアプリを作成しました。
 
 ### セットアップ
+#### DBの設定
+メモ情報を保存するために、事前にDBを設定する必要があります。
+
+1. postgreSQLのインストール
+以下のサイトを参考にPostgreSQLをインストールしてください。
+- https://github.com/postgres/postgres
+- https://www.postgresql.org/download/
+
+2. DBの作成
+以下のコマンドを実行して、DBを作成してください。
+```
+$ create database shinatra_memoapp;
+```
+
+3. テーブルの作成
+2.で作成したDBへ接続して、テーブルを作成します。以下のコマンドを実行してください。
+
+データベースへの接続
+```
+$ psql -d shinatra_memoapp
+```
+テーブルの作成
+```
+$ create table memodata(id text, title text, sentence text);
+```
+
+#### アプリの使用方法
 1. `git clone`を用いてファイルをダウンロードし、ローカル環境で使用できるようにします。
 ` git clone https://github.com/Judeeeee/shinatra-practice`
 
-2. Bundlerを使って必要なGemをインストールする
+2. Bundlerを使って必要なGemをインストールします。
 `gem install bundler` でbundlerが使える状態にします。
  `bundle install`で必要なgemが一斉にinstallされます。
 
